@@ -12,7 +12,7 @@ export class OmdbService {
   constructor(private http: HttpClient) { }
 
   searchMovies(query: string, page: number = 1, pageSize: number = 10): Observable<any> {
-    const url = `${this.apiUrl}&s=${query}&page=${page}`;
+    const url = `${this.apiUrl}&s=${encodeURIComponent(query)}&page=${page}`;
     return this.http.get<any>(url);
   }
 }
