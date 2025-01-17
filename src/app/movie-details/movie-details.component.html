@@ -1,0 +1,23 @@
+<div class="details-container" *ngIf="selectedMovie">
+    <h3 *ngIf="type === 'search'">Film Ekle</h3>
+    <h3 *ngIf="type === 'update'">Puan Güncelle</h3>
+
+    <form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="details-field" style="pointer-events: none;">
+        <mat-label>Adı</mat-label>
+        <input matInput formControlName="Title" [readonly]="true">
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="details-field" style="pointer-events: none;">
+        <mat-label>Görseli</mat-label>
+        <input matInput formControlName="Poster" [readonly]="true">
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="details-field">
+        <mat-label>Puanı</mat-label>
+        <input appNumberRange matInput type="text" formControlName="rating" required>
+      </mat-form-field>
+  
+      <button mat-raised-button color="primary" type="submit" [disabled]="!movieForm.valid" class="submit-button">Kaydet</button>
+    </form>
+</div>

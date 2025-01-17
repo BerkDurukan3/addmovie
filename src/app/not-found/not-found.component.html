@@ -1,0 +1,9 @@
+<div class="not-found-container center" *ngIf="!isLoading; else loadingTemplate">
+    <h1>404 - Sayfa Bulunamadı</h1>
+    <p>Üzgünüz, aradığınız sayfa bulunamıyor.</p>
+</div>
+<ng-template #loadingTemplate>
+    <div class="spinner-container">
+        <div class="spinner-loader"></div>
+    </div>
+</ng-template>

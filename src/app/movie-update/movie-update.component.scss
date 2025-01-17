@@ -1,0 +1,13 @@
+.centered-container {
+    min-height: 100vh; 
+    margin: 0 auto; 
+    padding: 20px; 
+    background-color: #f8f8f8; 
+    box-sizing: border-box; 
+  }
+  
+  @media (max-width: 768px) {
+    .centered-container {
+      padding: 10px; 
+    }
+  }

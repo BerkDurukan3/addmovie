@@ -1,0 +1,9 @@
+<div class="container">
+    <h2>Silme Onayı</h2>
+    <p><span style="font-weight: 900;">{{ data.title }}</span> filmini silmek istediğinizden emin misiniz?</p>
+    
+    <div class="nav-buttons center">
+      <button mat-raised-button class="submit-button" (click)="dialogRef.close(true)">Evet</button>
+      <button mat-raised-button class="submit-button" (click)="dialogRef.close()">Hayır</button>
+    </div>
+</div>

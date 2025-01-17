@@ -1,0 +1,18 @@
+<header>
+  <div class="header-container center">
+    <div class="logo center">
+      <div class="imdb-logo" *ngIf="!isLoading" (click)="goToHomePage()">
+        IMDb
+      </div>
+      <div *ngIf="isLoading" class="animated-skeleton logo-loader"></div>
+    </div>
+    
+    <div class="nav-buttons center" *ngIf="authService.isLoggedIn">
+      <button *ngIf="!isLoading" class="submit-button" mat-button (click)="onLogout()">Çıkış Yap</button>
+      <button *ngIf="!isLoading" class="submit-button" mat-raised-button color="primary" (click)="goToSearchPage()">Film Ekle</button>
+      <div *ngIf="isLoading" class="animated-skeleton button-loader"></div>
+      <div *ngIf="isLoading" class="animated-skeleton button-loader"></div>
+    </div>
+
+  </div>
+</header>

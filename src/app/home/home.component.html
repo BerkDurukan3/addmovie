@@ -1,0 +1,39 @@
+<div *ngIf="isLoading" class="skeleton-container">
+  <div *ngFor="let n of [].constructor(10)" class="skeleton-card">
+    <div class="skeleton-image"></div>
+    <div class="skeleton-text"></div>
+    <div class="skeleton-text short"></div>
+  </div>
+</div>
+
+<div *ngIf="!isLoading">
+  <div class="controls center">
+    <select class="styled-dropdown" (change)="onSortOrderChange($event)">
+      <option value="" disabled selected hidden>Sırala</option>
+      <option value="asc">Düşükten Yükseğe</option>
+      <option value="desc">Yüksekten Düşüğe</option>
+    </select>
+    <input type="text" [(ngModel)]="searchQuery" (input)="filterMovies()" placeholder="Ara..." class="search-box"/>
+  </div>
+
+  <div *ngIf="filteredMovies.length > 0; else noContent" class="movies-list">
+    <div *ngFor="let addedMovie of filteredMovies" class="movie-item center" (click)="navigateToUpdate(addedMovie.imdbID)">
+      <img  [src]="getOptimizedImageUrl(addedMovie.Poster)"
+            [alt]="addedMovie.Title"
+            class="movie-poster"
+            loading="lazy"/>
+      <div class="movie-info center">
+        <h4>{{ addedMovie.Title }}</h4>
+        <p style="color: yellow; font-size: 40px;">{{ getRating(addedMovie.rating )}}</p>
+        <button (click)="removeMovie(addedMovie); $event.stopPropagation();" class="delete-button center">Sil</button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noContent>
+    <div class="no-content center">
+      <p>Henüz içerik girilmedi</p>
+    </div>
+  </ng-template>
+  <div id="sentinel" class="sentinel"></div>
+</div>

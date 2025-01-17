@@ -1,0 +1,9 @@
+<div class="centered-container center" *ngIf="!isLoading; else loadingTemplate">
+    <app-movie-details [type]="'update'" [selectedMovie]="selectedMovie" (formSubmit)="onUpdateFormSubmit($event)"></app-movie-details>
+</div>
+
+<ng-template #loadingTemplate>
+    <div class="spinner-container">
+        <div class="spinner-loader"></div>
+    </div>
+</ng-template>

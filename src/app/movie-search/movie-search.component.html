@@ -1,0 +1,19 @@
+<main class="main-container">
+  <div class="search-container">
+    <mat-form-field appearance="outline" class="search-field" *ngIf="!isLoading">
+      <mat-label>Film Ara</mat-label>
+      <input matInput [(ngModel)]="searchQuery" (keyup)="onSearch()">
+    </mat-form-field>
+
+    <mat-selection-list #movieSelect class="movie-list" (selectionChange)="onSelectionChange($event)">
+      <mat-list-option *ngFor="let movie of movies" [selected]="movie === selectedMovie" [value]="movie">
+        <div class="movie-item center">
+          <img (error)="onImageError($event)" [src]="getOptimizedImage(movie.Poster)" alt="{{ movie.Title }}" loading="lazy" class="movie-poster">
+          <span class="movie-title" [title]="movie.Title">{{ movie.Title }}</span>
+        </div>
+      </mat-list-option>
+      <div id="sentinel" class="sentinel"></div>
+    </mat-selection-list>
+  </div>
+  <app-movie-details [type]="'search'" [selectedMovie]="selectedMovie" (formSubmit)="onDetailsFormSubmit($event)"></app-movie-details>
+</main>
