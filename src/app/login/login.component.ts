@@ -21,6 +21,7 @@ export class LoginComponent {
   ngOnInit(): void {
     if (this.authService.isLoggedIn) {
       this.router.navigate(['/home']); 
+      return
     }
     setTimeout(() => {
       this.isLoading = false;

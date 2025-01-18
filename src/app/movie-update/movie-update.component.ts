@@ -30,7 +30,7 @@ export class MovieUpdateComponent {
         if (movieId && this.addedMovies.length) {
           this.selectedMovie = this.addedMovies.find(movie => movie.imdbID === movieId) as Movie;
           if(this.selectedMovie === null || this.selectedMovie === undefined){
-            this.router.navigate(['**']);
+            this.router.navigate(['/home']);
             return;
           }
           this.selectedMovie.rating = '';

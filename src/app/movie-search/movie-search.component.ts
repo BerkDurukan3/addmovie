@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import {MatSnackBar} from '@angular/material/snack-bar'
 import { MovieDetailsComponent } from '../movie-details/movie-details.component';
+import { debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-movie-search',
@@ -31,6 +32,8 @@ export class MovieSearchComponent implements OnInit {
   loading: boolean = false;
   isLoading: boolean = true;
 
+  private searchSubject = new Subject<string>();
+
   constructor(private omdbService: OmdbService) {
   }
 
@@ -39,7 +42,23 @@ export class MovieSearchComponent implements OnInit {
     setTimeout(() => {
       this.isLoading = false;
       this.setupInfiniteScroll();
-    }, 500);
+      this.searchSubject.pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap(query => {
+          if (!query) {
+            this.movies = [];
+            return [];
+          }
+          this.loading = true;
+          this.page = 1;
+          return this.omdbService.searchMovies(query, this.page, this.pageSize);
+        })
+      ).subscribe(data => {
+        this.movies = [...data.Search || []];
+        this.loading = false;
+      });
+    }, 750);
   }
 
   setupInfiniteScroll() {
@@ -70,13 +89,7 @@ export class MovieSearchComponent implements OnInit {
 
   onSearch(): void {
     this.selectedMovie = null;
-    if (this.searchQuery.length > 2) {
-      this.page = 1;
-      this.movies = [];
-      this.loadMovies();
-    }else{
-      this.movies = [];
-    }
+    this.searchSubject.next(this.searchQuery);
   }
 
   addMovie(): void {

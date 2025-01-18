@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -28,11 +29,19 @@ export class HomeComponent {
   pageSize: number = 10;
   isLoading: boolean = true;
 
+  private searchSubject = new Subject<string>();
+  
   constructor(private router: Router, private authService: AuthService, public dialog: MatDialog) {}
 
   ngOnInit() {
     setTimeout(() => {
       this.loadInitialMovies();
+      this.searchSubject.pipe(
+        debounceTime(300),
+        distinctUntilChanged()
+      ).subscribe(query => {
+        this.filterMovies(query);
+      });
     }, 750);
   }
 
@@ -123,10 +132,14 @@ export class HomeComponent {
     });
   } 
 
-  filterMovies() {
-    this.filteredMovies = this.displayedMovies.filter(movie =>
-      movie.Title.toLowerCase().includes(this.searchQuery.toLowerCase())
-    );
+  filterMovies(query: string): void {
+    if (!query) {
+      this.filteredMovies = [...this.displayedMovies];
+    } else {
+      this.filteredMovies = this.displayedMovies.filter(movie =>
+        movie.Title.toLowerCase().includes(query.toLowerCase())
+      );
+    }
     this.sortMovies();
   }
 

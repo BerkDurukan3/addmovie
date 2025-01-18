@@ -13,7 +13,7 @@
       <option value="asc">Düşükten Yükseğe</option>
       <option value="desc">Yüksekten Düşüğe</option>
     </select>
-    <input type="text" [(ngModel)]="searchQuery" (input)="filterMovies()" placeholder="Ara..." class="search-box"/>
+    <input type="text" [(ngModel)]="searchQuery" (input)="filterMovies(searchQuery)" placeholder="Ara..." class="search-box"/>
   </div>
 
   <div *ngIf="filteredMovies.length > 0; else noContent" class="movies-list">
@@ -23,8 +23,8 @@
             class="movie-poster"
             loading="lazy"/>
       <div class="movie-info center">
-        <h4>{{ addedMovie.Title }}</h4>
-        <p style="color: yellow; font-size: 40px;">{{ getRating(addedMovie.rating )}}</p>
+        <span>{{ addedMovie.Title }}</span>
+        <span style="color: #f5c518; font-size: 50px;">{{ getRating(addedMovie.rating )}}</span>
         <button (click)="removeMovie(addedMovie); $event.stopPropagation();" class="delete-button center">Sil</button>
       </div>
     </div>
