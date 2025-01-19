@@ -16,7 +16,7 @@
             class="movie-poster"
             loading="lazy"
             (load)="onImageLoad(addedMovie)"
-            (error)="onImageError(addedMovie)"
+            (error)="onImageError($event, addedMovie)"
             [ngStyle]="{ opacity: addedMovie.isLoading ? '0' : '1', transition: 'opacity 0.3s ease-in-out' }"/>
       <div class="hidden movie-info center">
         <span>{{ addedMovie.Title }}</span>

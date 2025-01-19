@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { OmdbService } from '../omdb.service';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { Movie } from '../models/movie.model';
@@ -21,6 +21,7 @@ import { debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
 export class MovieSearchComponent implements OnInit {
 
   private _snackBar = inject(MatSnackBar);
+  private intersectionObserver!: IntersectionObserver;
 
   searchQuery: string = '';
   movies: Movie[] = [];
@@ -37,8 +38,10 @@ export class MovieSearchComponent implements OnInit {
   }
 
   ngOnInit() {
+    setTimeout(() => {
+      this.setupInfiniteScroll();
+    }, 500);
     this.loadMoviesFromLocalStorage();
-    this.setupInfiniteScroll();
     this.searchSubject.pipe(
       debounceTime(300),
       distinctUntilChanged(),
@@ -52,6 +55,7 @@ export class MovieSearchComponent implements OnInit {
         return this.omdbService.searchMovies(query, this.page, this.pageSize);
       })
     ).subscribe(data => {
+      data.Search.map((item: { isLoading: boolean; }) => item.isLoading = true);
       this.movies = [...data.Search || []];
       this.loading = false;
     });
@@ -59,20 +63,21 @@ export class MovieSearchComponent implements OnInit {
 
   setupInfiniteScroll() {
     const sentinel = document.querySelector('#sentinel') as Element;
-    const intersectionObserver = new IntersectionObserver((entries) => {
+    this.intersectionObserver = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && this.searchQuery) {
         this.page++;
         this.loadMovies();
       }
     });
 
-    intersectionObserver.observe(sentinel);
+    this.intersectionObserver.observe(sentinel);
   }
 
   loadMovies() {
     if (!this.loading) {
       this.loading = true;
       this.omdbService.searchMovies(this.searchQuery, this.page, this.pageSize).subscribe(data => {
+        data.Search.map((item: { isLoading: boolean; }) => item.isLoading = true);
         this.movies = [...this.movies, ...data.Search || []];
         this.loading = false;
       });
@@ -83,8 +88,10 @@ export class MovieSearchComponent implements OnInit {
     movie.isLoading = false;
   }
 
-  onImageError(movie: Movie) {
-    movie.isLoading = true;
+  onImageError(event: Event, movie: Movie) {
+    movie.isLoading = false;
+    const element = event.target as HTMLImageElement;
+    element.src = 'img.png'; 
   }
 
   onSearch(): void {
@@ -140,5 +147,11 @@ export class MovieSearchComponent implements OnInit {
   onDetailsFormSubmit(updatedData: any) {
     this.selectedMovie = updatedData;
     this.onSubmit();
+  }
+
+  ngOnDestroy(): void {
+    if (this.intersectionObserver) {
+      this.intersectionObserver.disconnect();
+    }
   }
 }

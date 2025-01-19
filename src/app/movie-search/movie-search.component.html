@@ -7,8 +7,9 @@
 
     <mat-selection-list #movieSelect class="movie-list" (selectionChange)="onSelectionChange($event)">
       <mat-list-option *ngFor="let movie of movies" [selected]="movie === selectedMovie" [value]="movie">
-        <div class="movie-item center">
-          <img (load)="onImageLoad(movie)" (error)="onImageError(movie)" [src]="getOptimizedImage(movie.Poster)" alt="{{ movie.Title }}" loading="lazy" class="movie-poster">
+        <div class="movie-item center" style="position: relative;">
+          <div class="skeleton-loader" *ngIf="movie.isLoading" [ngStyle]="{ visibility: movie.isLoading ? 'visible' : 'hidden' }"></div>
+          <img [ngStyle]="{ visibility: movie.isLoading ? 'hidden' : 'visible', position: movie.isLoading ? 'absolute' : 'relative' }" (load)="onImageLoad(movie)" (error)="onImageError($event, movie)" [src]="getOptimizedImage(movie.Poster)" alt="{{ movie.Title }}" loading="lazy" class="movie-poster">
           <span class="movie-title" [title]="movie.Title">{{ movie.Title }}</span>
         </div>
       </mat-list-option>

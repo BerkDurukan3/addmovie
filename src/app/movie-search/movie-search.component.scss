@@ -16,7 +16,7 @@
   }
   
   .movie-list {
-    max-height: 500px; 
+    max-height: 200px; 
     overflow-y: auto;
   }
   
@@ -24,6 +24,7 @@
     width: 50px;
     height: 75px;
     margin-right: 12px;
+    object-fit: cover;
   }
   
   .movie-title {
@@ -31,6 +32,7 @@
     width: 400px;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
   
   .details-container {
@@ -48,17 +50,37 @@
   .submit-button {
     width: 100%;
   }
+
+  .movie-item {
+    position: relative;
+  }
+  
+  .skeleton-loader {
+    width: 50px;
+    height: 75px;
+    margin-right: 12px;
+    background: linear-gradient(90deg, #eee 25%, #ddd 37%, #eee 63%);
+    background-size: 200% 100%;
+    animation: shine 1.4s ease-in-out infinite;
+    border-radius: 4px;
+    position: relative;
+    z-index: 1;
+    transition: opacity 0.3s ease-in-out; 
+  }
   
   @media (min-width: 768px) {
     .main-container {
       flex-direction: row;
       justify-content: center;
     }
-  
+    .movie-list {
+      max-height: 500px; 
+    }
     .search-container{
       margin: 16px;
     }
-  
+
+    .skeleton-loader
     .movie-poster {
       width: 70px;
       height: 100px;
@@ -83,15 +105,6 @@
   .movie-title {
       font-size: 14px;
     }
-  }
-  
-  .skeleton-loader {
-    width: 50px;
-    height: 75px;
-    margin-right: 12px;
-    background: linear-gradient(90deg, #eee 25%, #ddd 37%, #eee 63%);
-    background-size: 200% 100%;
-    animation: shine 1.4s ease-in-out infinite;
   }
 
   @keyframes shine {

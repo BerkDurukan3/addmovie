@@ -18,7 +18,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class HomeComponent {
 
   private _snackBar = inject(MatSnackBar);
-  
+  private intersectionObserver!: IntersectionObserver;
+
   searchQuery: string = '';
   sortOrder: string = '';
   addedMovies: Movie[] = [];
@@ -63,14 +64,14 @@ export class HomeComponent {
 
   setupInfiniteScroll() {
     const sentinel = document.querySelector('#sentinel') as Element;
-    const intersectionObserver = new IntersectionObserver((entries) => {
+    this.intersectionObserver = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting ) {
         this.loadMoreMovies();
       }
     });
 
     if (sentinel) {
-      intersectionObserver.observe(sentinel);
+      this.intersectionObserver.observe(sentinel);
     }
   }
 
@@ -149,7 +150,15 @@ export class HomeComponent {
     movie.isLoading = false;
   }
 
-  onImageError(movie: Movie){
+  onImageError(event: Event, movie: Movie){
+    const element = event.target as HTMLImageElement;
+    element.src = 'img.png'; 
     movie.isLoading = false;
+  }
+
+  ngOnDestroy(): void {
+    if (this.intersectionObserver) {
+      this.intersectionObserver.disconnect();
+    }
   }
 }
