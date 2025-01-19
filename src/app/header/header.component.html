@@ -1,17 +1,14 @@
-<header class="header">
-  <div class="header-container center">
+<header class="hidden header">
+  <div class="hidden header-container center">
     <div class="logo center">
-      <div class="imdb-logo" *ngIf="!isLoading" (click)="goToHomePage()">
+      <div class="imdb-logo" (click)="goToHomePage()">
         IMDb
       </div>
-      <div *ngIf="isLoading" class="animated-skeleton logo-loader"></div>
     </div>
 
-    <nav class="nav-buttons center" *ngIf="authService.isLoggedIn">
-      <button *ngIf="!isLoading" class="submit-button logout-button" mat-raised-button color="warn" (click)="onLogout()">Çıkış Yap</button>
-      <button *ngIf="!isLoading" class="submit-button add-movie-button" mat-raised-button color="primary" (click)="goToSearchPage()">Film Ekle</button>
-      <div *ngIf="isLoading" class="animated-skeleton button-loader"></div>
-      <div *ngIf="isLoading" class="animated-skeleton button-loader"></div>
+    <nav class=" hidden nav-buttons center" *ngIf="authService.isLoggedIn">
+      <button class="logout-button" mat-raised-button (click)="onLogout()">Çıkış Yap</button>
+      <button class="add-movie-button" mat-raised-button (click)="goToSearchPage()">Film Ekle</button>
     </nav>
   </div>
 </header>

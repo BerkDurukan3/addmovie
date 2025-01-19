@@ -6,4 +6,5 @@ export interface Movie {
     Type: string;
     Poster: string;
     rating: string;
+    isLoading: boolean;
 }

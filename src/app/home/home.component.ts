@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -27,22 +26,11 @@ export class HomeComponent {
   filteredMovies: Movie[] = [];
   page: number = 0;
   pageSize: number = 10;
-  isLoading: boolean = true;
 
-  private searchSubject = new Subject<string>();
-  
   constructor(private router: Router, private authService: AuthService, public dialog: MatDialog) {}
 
   ngOnInit() {
-    setTimeout(() => {
-      this.loadInitialMovies();
-      this.searchSubject.pipe(
-        debounceTime(300),
-        distinctUntilChanged()
-      ).subscribe(query => {
-        this.filterMovies(query);
-      });
-    }, 750);
+    this.loadInitialMovies();
   }
 
   getOptimizedImageUrl(url: string): string {
@@ -66,7 +54,7 @@ export class HomeComponent {
     this.addedMovies = this.fetchMovies();
     this.displayedMovies = this.addedMovies.slice(0, this.pageSize);
     this.filteredMovies = this.displayedMovies;
-    this.isLoading = false;
+    this.filteredMovies.map(movie => movie.isLoading = true);
     setTimeout(() => {
       this.setupInfiniteScroll();
     }, 500);
@@ -89,6 +77,7 @@ export class HomeComponent {
   loadMoreMovies() {
     this.page++;
     const nextMovies = this.addedMovies.slice(this.page * this.pageSize, (this.page + 1) * this.pageSize);
+    nextMovies.map(movie => movie.isLoading = true);
     this.displayedMovies = [...this.displayedMovies, ...nextMovies];
     this.filteredMovies = [...this.filteredMovies, ...nextMovies];
     this.sortMovies();
@@ -154,5 +143,13 @@ export class HomeComponent {
 
   getRating(rating: string){
     return Number(rating);
+  }
+
+  onImageLoad(movie: Movie) {
+    movie.isLoading = false;
+  }
+
+  onImageError(movie: Movie){
+    movie.isLoading = false;
   }
 }

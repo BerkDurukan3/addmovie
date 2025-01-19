@@ -8,11 +8,15 @@
   .details-field {
     width: 100%;
     margin-bottom: 16px;
+    input{
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
   
   @media (min-width: 768px) {
 
- .details-container {
+    .details-container {
       margin: 16px;
     }
   

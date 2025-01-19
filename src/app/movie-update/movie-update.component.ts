@@ -18,27 +18,22 @@ export class MovieUpdateComponent {
 
   selectedMovie!: Movie;
   addedMovies: Movie [] = [];
-  isLoading: boolean = true;
 
   constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.loadMoviesFromLocalStorage();
-      this.route.paramMap.subscribe(params => {
-        const movieId = params.get('id');
-        if (movieId && this.addedMovies.length) {
-          this.selectedMovie = this.addedMovies.find(movie => movie.imdbID === movieId) as Movie;
-          if(this.selectedMovie === null || this.selectedMovie === undefined){
-            this.router.navigate(['/home']);
-            return;
-          }
-          this.selectedMovie.rating = '';
+    this.loadMoviesFromLocalStorage();
+    this.route.paramMap.subscribe(params => {
+      const movieId = params.get('id');
+      if (movieId && this.addedMovies.length) {
+        this.selectedMovie = this.addedMovies.find(movie => movie.imdbID === movieId) as Movie;
+        if(this.selectedMovie === null || this.selectedMovie === undefined){
+          this.router.navigate(['/home']);
+          return;
         }
-      });
-      this.isLoading = false;
-    }, 1000);
-
+        this.selectedMovie.rating = '';
+      }
+    });
   }
 
   onUpdateFormSubmit(updatedData: Movie) {

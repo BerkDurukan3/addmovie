@@ -1,12 +1,4 @@
-<div *ngIf="isLoading" class="skeleton-container">
-  <div *ngFor="let n of [].constructor(10)" class="skeleton-card">
-    <div class="skeleton-image"></div>
-    <div class="skeleton-text"></div>
-    <div class="skeleton-text short"></div>
-  </div>
-</div>
-
-<div *ngIf="!isLoading">
+<div class="hidden container">
   <div class="controls center">
     <select class="styled-dropdown" (change)="onSortOrderChange($event)">
       <option value="" disabled selected hidden>Sırala</option>
@@ -17,12 +9,16 @@
   </div>
 
   <div *ngIf="filteredMovies.length > 0; else noContent" class="movies-list">
-    <div *ngFor="let addedMovie of filteredMovies" class="movie-item center" (click)="navigateToUpdate(addedMovie.imdbID)">
+    <div *ngFor="let addedMovie of filteredMovies" class="movie-item center" (click)="navigateToUpdate(addedMovie.imdbID)" [ngClass]="{ 'hoverable': !addedMovie.isLoading }">
+      <div class="skeleton-loader" *ngIf="addedMovie.isLoading"></div>
       <img  [src]="getOptimizedImageUrl(addedMovie.Poster)"
             [alt]="addedMovie.Title"
             class="movie-poster"
-            loading="lazy"/>
-      <div class="movie-info center">
+            loading="lazy"
+            (load)="onImageLoad(addedMovie)"
+            (error)="onImageError(addedMovie)"
+            [ngStyle]="{ opacity: addedMovie.isLoading ? '0' : '1', transition: 'opacity 0.3s ease-in-out' }"/>
+      <div class="hidden movie-info center">
         <span>{{ addedMovie.Title }}</span>
         <span style="color: #f5c518; font-size: 50px;">{{ getRating(addedMovie.rating )}}</span>
         <button (click)="removeMovie(addedMovie); $event.stopPropagation();" class="delete-button center">Sil</button>

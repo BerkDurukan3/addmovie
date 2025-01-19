@@ -4,19 +4,20 @@
   padding: 10px 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
+  visibility: visible;
 }
 
 .header-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1200px;
   margin: 0 auto;
   flex-wrap: wrap;
+  visibility: visible;
 }
 
 .logo {
-  font-size: 24px;
+  font-size: 40px;
   font-weight: bold;
   color: #f5c518;
   cursor: pointer;
@@ -33,9 +34,10 @@
   display: flex;
   gap: 10px; 
   flex-wrap: wrap; 
+  visibility: visible;
 }
 
-.submit-button {
+.logout-button {
   font-size: 16px;
   padding: 8px 16px;
   border-radius: 4px;
@@ -43,9 +45,6 @@
   border: none;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
-}
-
-.logout-button {
   background-color: #e74c3c; 
   color: white;
 }
@@ -56,6 +55,13 @@
 }
 
 .add-movie-button {
+  font-size: 16px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  min-width: 100px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
   background-color: #3498db; 
   color: white;
 }
@@ -63,23 +69,6 @@
 .add-movie-button:hover {
   background-color: #2980b9;
   transform: scale(1.05);
-}
-
-.button-loader {
-  width: 100px;
-  height: 36px;
-  background-color: #333;
-  border-radius: 4px;
-  animation: shine 1.4s ease-in-out infinite;
-}
-
-@keyframes shine {
-  0% {
-    background-position: -150px 0;
-  }
-  100% {
-    background-position: 150px 0;
-  }
 }
 
 @media (max-width: 768px) {
@@ -106,7 +95,7 @@
 
 @media (max-width: 480px) {
   .logo {
-    font-size: 20px;
+    font-size: 40px;
   }
 
   .submit-button {

@@ -14,7 +14,6 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
   loginError: boolean = false;
-  isLoading: boolean = true;
 
   constructor(private router: Router, private authService: AuthService) {}
 
@@ -23,9 +22,6 @@ export class LoginComponent {
       this.router.navigate(['/home']); 
       return
     }
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 1000);
   }
 
   onSubmit() {

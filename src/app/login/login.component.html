@@ -1,4 +1,4 @@
-<div class="login-container" *ngIf="!isLoading; else loadingTemplate">
+<div class="hidden login-container">
   <h2>Login</h2>
   <form (ngSubmit)="onSubmit()" >
     <div class="form-group">
@@ -17,8 +17,3 @@
   </div>
 </div> 
  
-<ng-template #loadingTemplate>
-  <div class="spinner-container">
-      <div class="spinner-loader"></div>
-  </div>
-</ng-template>

@@ -11,15 +11,9 @@ import { CommonModule } from '@angular/common';
 })
 export class HeaderComponent {
 
-  isLoading = true;
-
   constructor(private router: Router, public authService: AuthService) {}
 
-  ngOnInit(): void {
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 750); 
-  }
+  ngOnInit(): void {}
 
   onLogout(): void {
     this.authService.logout();

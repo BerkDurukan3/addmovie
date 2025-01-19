@@ -30,7 +30,6 @@ export class MovieSearchComponent implements OnInit {
   page: number = 1;
   pageSize: number = 10;
   loading: boolean = false;
-  isLoading: boolean = true;
 
   private searchSubject = new Subject<string>();
 
@@ -39,26 +38,23 @@ export class MovieSearchComponent implements OnInit {
 
   ngOnInit() {
     this.loadMoviesFromLocalStorage();
-    setTimeout(() => {
-      this.isLoading = false;
-      this.setupInfiniteScroll();
-      this.searchSubject.pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        switchMap(query => {
-          if (!query) {
-            this.movies = [];
-            return [];
-          }
-          this.loading = true;
-          this.page = 1;
-          return this.omdbService.searchMovies(query, this.page, this.pageSize);
-        })
-      ).subscribe(data => {
-        this.movies = [...data.Search || []];
-        this.loading = false;
-      });
-    }, 750);
+    this.setupInfiniteScroll();
+    this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(query => {
+        if (!query) {
+          this.movies = [];
+          return [];
+        }
+        this.loading = true;
+        this.page = 1;
+        return this.omdbService.searchMovies(query, this.page, this.pageSize);
+      })
+    ).subscribe(data => {
+      this.movies = [...data.Search || []];
+      this.loading = false;
+    });
   }
 
   setupInfiniteScroll() {
@@ -83,8 +79,12 @@ export class MovieSearchComponent implements OnInit {
     }
   }
 
-  onImageError(event: Event) {
-    const imgElement = event.target as HTMLImageElement;
+  onImageLoad(movie: Movie) {
+    movie.isLoading = false;
+  }
+
+  onImageError(movie: Movie) {
+    movie.isLoading = true;
   }
 
   onSearch(): void {
@@ -141,5 +141,4 @@ export class MovieSearchComponent implements OnInit {
     this.selectedMovie = updatedData;
     this.onSubmit();
   }
-
 }

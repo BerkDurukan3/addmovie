@@ -4,10 +4,20 @@
     padding: 20px; 
     background-color: #f8f8f8; 
     box-sizing: border-box; 
+    visibility: visible;
+    
   }
   
   @media (max-width: 768px) {
     .centered-container {
       padding: 10px; 
+      align-items: baseline;
     }
+  }
+
+  @media (max-width: 480px) {
+    .centered-container {
+      align-items: baseline;
+    }
+    
   }
